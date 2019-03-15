@@ -1,6 +1,12 @@
+#ifndef _transporter_
+ #define _transporter_
+ 
 #include "motor.h"
-#include "speed.cpp"
-#include "constants.cpp"
+#include "speed.h"
+#include "constants.h"
+#include "Arduino.h"
+#include <stdint.h>
+#define byte uint8_t
 
 /// Abstracts away the transport car moving logic.
 class Transporter {
@@ -25,3 +31,4 @@ class Transporter {
     /// Stop the transporter. 
     void Transporter::Stop();
 };
+ #endif

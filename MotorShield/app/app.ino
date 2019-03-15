@@ -1,5 +1,7 @@
-#include "libraries/transporter.h"
-#include "libraries/speed.cpp"
+#include "transporter.h"
+#include "speed.h"
+
+#define byte uint8_t
 
 void setup() {
   for (int i = 4; i <= 7; i++)

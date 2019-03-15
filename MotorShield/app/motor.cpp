@@ -1,17 +1,20 @@
 #include "motor.h"
 
+Motor::Motor() {
+  
+}
+
 /// This will calulate the power needed for the provided `Speed`. 
 byte Motor::GetSpeed(Speed speed, byte lowest_power_value) {
     switch (speed)
     {
         case Speed::Stationair:
-        return MIN_POWER_VALUE;
+            return MIN_POWER_VALUE;
         case Speed::Fastest:
-        return MAX_POWER_VALUE;
+            return MAX_POWER_VALUE;
         default:
-        byte factor = (MAX_POWER_VALUE - lowest_power_value) / 5;
-
-        return lowest_power_value + (factor * (byte)speed);  
+            byte factor = (MAX_POWER_VALUE - lowest_power_value) / 5;
+            return lowest_power_value + (factor * (byte)speed);  
     }    
 }
 
