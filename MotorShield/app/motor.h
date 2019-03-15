@@ -4,7 +4,6 @@
 #include "speed.h"
 #include "constants.h"
 #include "Arduino.h"
-#include <stdint.h>
 #define byte uint8_t
 
 class Motor {   

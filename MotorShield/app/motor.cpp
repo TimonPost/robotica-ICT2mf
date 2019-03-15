@@ -1,8 +1,14 @@
 #include "motor.h"
 
 Motor::Motor() {
-  
 }
+
+Motor::Motor(byte enginePin, byte directionPin, byte lowest_power_value) 
+{ 
+    this->enginePin = enginePin;
+    this->directionPin = directionPin;
+    this->lowest_power_value = lowest_power_value;
+}   
 
 /// This will calulate the power needed for the provided `Speed`. 
 byte Motor::GetSpeed(Speed speed, byte lowest_power_value) {
@@ -17,13 +23,6 @@ byte Motor::GetSpeed(Speed speed, byte lowest_power_value) {
             return lowest_power_value + (factor * (byte)speed);  
     }    
 }
-
-Motor::Motor(byte enginePin, byte directionPin, byte lowest_power_value) 
-{ 
-    this->enginePin = enginePin;
-    this->directionPin = directionPin;
-    this->lowest_power_value = lowest_power_value;
-}   
 
 /// Set the motor speed by the given speed.
 void Motor::SetSpeed(Speed speed) {
