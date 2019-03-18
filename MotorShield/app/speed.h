@@ -1,3 +1,5 @@
+#ifndef _speed_
+ #define _speed_
 enum Speed {
   Stationair = 255,
   Fastest = 253,
@@ -8,3 +10,4 @@ enum Speed {
   Fast = 3,
   VeryFast = 4,
 };
+#endif
