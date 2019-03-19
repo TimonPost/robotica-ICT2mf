@@ -10,8 +10,8 @@ class LineDetector {
         bool HasValue(int threshold, int pinType, int input);
     public:
         LineDetector();
-        bool* GatherSensorResults();
-        bool LeftSideSensorsEnabled(bool sensors[5]);
-        bool RightSideSensorsEnabled(bool sensors[5]);
+        void GatherSensorResults(bool (&sensorValues)[5]);
+        bool LeftSideSensorsEnabled(bool (&sensorValues)[5]);
+        bool RightSideSensorsEnabled(bool (&sensorValues)[5]);
 };
  #endif

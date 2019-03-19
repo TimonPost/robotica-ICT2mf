@@ -24,7 +24,10 @@ void loop()
 { 
   LineDetector detector = LineDetector();
 
-  bool *sensorValues = detector.GatherSensorResults();
+  const int size=5;
+  bool sensorValues[size];
+
+  detector.GatherSensorResults(sensorValues);
 
   if (detector.LeftSideSensorsEnabled(sensorValues)) {
     SharpTurnLeft();
@@ -39,8 +42,6 @@ void loop()
     Serial.print(sensorValues[a]);
   }
   Serial.println();
-  
-  delay(100);
 }
 
 void SharpTurnLeft() {

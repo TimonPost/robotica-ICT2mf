@@ -1,4 +1,4 @@
-#include "sensor.h"
+#include "detector.h"
 
 LineDetector::LineDetector() {
     
@@ -22,22 +22,20 @@ boolean LineDetector::HasValue(int threshold, int pinType, int input){
   }
 }
 
-bool LineDetector::LeftSideSensorsEnabled(bool sensors[5]) {
-    return (sensors[0] == true || sensors[1] == true);
+bool LineDetector::LeftSideSensorsEnabled(bool (&sensorValues)[5]) {
+    return (sensorValues[0] == true || sensorValues[1] == true);
 }
 
-bool LineDetector::RightSideSensorsEnabled(bool sensors[5]) {
-    return (sensors[3] == true || sensors[4] == true);
+bool LineDetector::RightSideSensorsEnabled(bool (&sensorValues)[5]) {
+    return (sensorValues[3] == true || sensorValues[4] == true);
 }
 
-bool* LineDetector::GatherSensorResults () {
-   bool enabledSensors[5] = { false, false, false, false, false };
+void LineDetector::GatherSensorResults(bool (&sensorValues)[5]) {
+    sensorValues[0] = HasValue(200, 4, input0);
+    sensorValues[1] = HasValue(200, 4, input1);
+    sensorValues[2] = HasValue(200, 3, input4);
+    sensorValues[3] = HasValue(200, 4, input2);
+    sensorValues[4] = HasValue(200, 4, input3);
 
-    enabledSensors[0] = HasValue(200, 4, input0);
-    enabledSensors[1] = HasValue(200, 4, input1);
-    enabledSensors[2] = HasValue(200, 3, input4);
-    enabledSensors[3] = HasValue(200, 4, input2);
-    enabledSensors[4] = HasValue(200, 4, input3);
-
-   return enabledSensors;
+   return sensorValues;
 }
