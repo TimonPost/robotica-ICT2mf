@@ -15,13 +15,11 @@ class Transporter {
     public:
     Transporter();
     
-    //   void LeftWeel ();
+    /// Get the left motor of the transporter.
+    Motor& LeftMotor();
 
-    /// Set the speed of the left weel.
-    void SetLeftWeelSpeed(Speed speed);
-
-    /// Set the speed of the left weel.
-    void SetRightWeelSpeed(Speed speed);
+    /// Get the right motor of the transporter.
+    Motor& RightMotor();
 
     /// Make the transporter move in a constant way.
     void Transporter::Constant(Speed speed);

@@ -7,18 +7,16 @@ Transporter::Transporter()
     motor1.Reverse(true); 
 }
 
-//   void Transporter::LeftWeel () {
-
-//   }
-
-/// Set the speed of the left weel.
-void Transporter::SetLeftWeelSpeed(Speed speed) {
-    motor1.SetSpeed(speed);
+/// Get the left motor of this transporter.
+/// With the motor you set the speed and directions.
+Motor& Transporter::LeftMotor() {
+    return motor1;
 }
 
-/// Set the speed of the left weel.
-void Transporter::SetRightWeelSpeed(Speed speed) {
- motor2.SetSpeed(speed);
+/// Get the right motor of this transporter.
+/// With the motor you set the speed and directions.
+Motor& Transporter::RightMotor() {
+    return motor2;
 }
 
 /// Make the transporter move in a constant way.

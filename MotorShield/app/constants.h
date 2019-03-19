@@ -1,6 +1,7 @@
 #ifndef _constant_
  #define _constant_
 #include <stdint.h>
+#include "Arduino.h"
 #define byte uint8_t
 
 const byte EN1 = 6;
@@ -23,4 +24,4 @@ const int input3 = A3;
 // 3 pin sensor
 const int input4 = 3;
 
- #endif
+#endif
