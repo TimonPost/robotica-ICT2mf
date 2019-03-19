@@ -2,9 +2,11 @@
 #include "speed.h"
 
 #define byte uint8_t
+Transporter car;
 
 void setup()
 {
+  car = Transporter();
   for (int i = 4; i <= 7; i++){
     pinMode(i, OUTPUT);
   }
@@ -18,7 +20,6 @@ void setup()
 
 void loop()
 {
-  Transporter car = Transporter();
   car.Stop();
   delay(2000);
   car.Constant(Speed::VerySlow);
@@ -33,17 +34,24 @@ void loop()
   delay(2000);
   car.Constant(Speed::Fastest);
   delay(2000);
-
-  // Calibrations for the pins.
-  // IsLine(150, 4, input0);
-  // IsLine(100, 4, input1);
-  // IsLine(0, 3, input4);
-  // IsLine(100, 4, input2);
-  // IsLine(100, 4, input3);
   
   String reading = String(IsLine(200, 4, input0)) + String(IsLine(200, 4, input1)) + String(IsLine(0, 3, input4)) + String(IsLine(200, 4, input2)) + String(IsLine(200, 4, input3));
   Serial.println(reading);
-
+  if (reading == "00100") {
+    // Straight ahead  
+  } else if (reading == "11100") {
+    // hard right
+  } else if (reading == "00111") {
+    // hard left
+  } else if (reading == "01100") {
+    // smooth right
+  } else if (reading == "00110") {
+    // smooth left
+  } else if(reading == "00000") {
+    // no line found
+  } else {
+    // default
+  }
   delay(100);
 
 }
