@@ -5,6 +5,7 @@ Transporter::Transporter()
     motor1 = Motor(EN1, IN1, LOWEST_POWER_VALUE_ENGINE1);
     motor2 =  Motor(EN2, IN2, LOWEST_POWER_VALUE_ENGINE2);
     motor1.Reverse(true); 
+    motor2.Reverse(false);
 }
 
 /// Get the left motor of this transporter.
