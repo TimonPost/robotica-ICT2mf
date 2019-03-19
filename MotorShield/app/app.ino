@@ -5,9 +5,9 @@
 
 void setup()
 {
-  for (int i = 4; i <= 7; i++)
+  for (int i = 4; i <= 7; i++){
     pinMode(i, OUTPUT);
-
+  }
   pinMode(input0, INPUT);
   pinMode(input1, INPUT);
   pinMode(input2, INPUT);
