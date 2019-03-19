@@ -29,27 +29,30 @@ void loop()
 
   detector.GatherSensorResults(sensorValues);
 
-  if (detector.LeftSideSensorsEnabled(sensorValues)) {
-    SharpTurnLeft();
+  if (detector.LeftSideSensorsEnabled(sensorValues)) { 
+    SharpTurnRight();
   }
   else if (detector.RightSideSensorsEnabled(sensorValues)) {
-    SharpTurnRight();
-  } else {
-    car.Constant(Speed::Slow);
+    SharpTurnLeft();
+  } else if (detector.NoSensorsDetected(sensorValues)) {
+    SharpTurnLeft();
+  }else {
+    car.Constant(Speed::Fastest);
   }
 
   for (int a = 0; a < 5; a++) {
     Serial.print(sensorValues[a]);
   }
   Serial.println();
+  delay(25);
 }
 
 void SharpTurnLeft() {
-  car.RightMotor().SetSpeed(Speed::VeryFast);
-  car.LeftMotor().SetSpeed(Speed::Stationair);
+  car.RightMotor().SetSpeed(Speed::Fastest);
+  car.LeftMotor().Reverse(true);
 }
 
 void SharpTurnRight() {
-    car.RightMotor().SetSpeed(Speed::Stationair);
-    car.LeftMotor().SetSpeed(Speed::VeryFast);
+    car.RightMotor().Reverse(true);
+    car.LeftMotor().SetSpeed(Speed::Fastest);
 }

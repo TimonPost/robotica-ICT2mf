@@ -30,12 +30,16 @@ bool LineDetector::RightSideSensorsEnabled(bool (&sensorValues)[5]) {
     return (sensorValues[3] == true || sensorValues[4] == true);
 }
 
+bool LineDetector::NoSensorsDetected(bool (&sensorValues)[5]) {
+    return (sensorValues[0] == false || sensorValues[1] == false || sensorValues[2] == false || sensorValues[3] == false || sensorValues[4 == false]);
+}
+
 void LineDetector::GatherSensorResults(bool (&sensorValues)[5]) {
-    sensorValues[0] = HasValue(200, 4, input0);
-    sensorValues[1] = HasValue(200, 4, input1);
-    sensorValues[2] = HasValue(200, 3, input4);
-    sensorValues[3] = HasValue(200, 4, input2);
-    sensorValues[4] = HasValue(200, 4, input3);
+    sensorValues[0] = HasValue(800, 4, input0);
+    sensorValues[1] = HasValue(800, 4, input1);
+    sensorValues[2] = HasValue(0, 3, input4);
+    sensorValues[3] = HasValue(800, 4, input2);
+    sensorValues[4] = HasValue(800, 4, input3);
 
    return sensorValues;
 }

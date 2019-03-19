@@ -13,5 +13,6 @@ class LineDetector {
         void GatherSensorResults(bool (&sensorValues)[5]);
         bool LeftSideSensorsEnabled(bool (&sensorValues)[5]);
         bool RightSideSensorsEnabled(bool (&sensorValues)[5]);
+        bool LineDetector::NoSensorsDetected(bool (&sensorValues)[5]);        
 };
  #endif
