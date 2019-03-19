@@ -1,6 +1,10 @@
+#ifndef _transporter_
+ #define _transporter_
+ 
 #include "motor.h"
-#include "speed.cpp"
-#include "constants.cpp"
+#include "speed.h"
+#include "constants.h"
+#define byte uint8_t
 
 /// Abstracts away the transport car moving logic.
 class Transporter {
@@ -11,13 +15,11 @@ class Transporter {
     public:
     Transporter();
     
-    //   void LeftWeel ();
+    /// Get the left motor of the transporter.
+    Motor& LeftMotor();
 
-    /// Set the speed of the left weel.
-    void SetLeftWeelSpeed(Speed speed);
-
-    /// Set the speed of the left weel.
-    void SetRightWeelSpeed(Speed speed);
+    /// Get the right motor of the transporter.
+    Motor& RightMotor();
 
     /// Make the transporter move in a constant way.
     void Transporter::Constant(Speed speed);
@@ -25,3 +27,4 @@ class Transporter {
     /// Stop the transporter. 
     void Transporter::Stop();
 };
+ #endif

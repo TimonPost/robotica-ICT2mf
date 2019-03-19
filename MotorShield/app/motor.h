@@ -1,5 +1,10 @@
-#include "speed.cpp"
-#include "constants.cpp"
+#ifndef _motor_
+ #define _motor_
+
+#include "speed.h"
+#include "constants.h"
+#include "Arduino.h"
+#define byte uint8_t
 
 class Motor {   
   private: 
@@ -29,3 +34,4 @@ class Motor {
       /// Make to motor turn into the opposite direction.
       void Motor::Reverse(bool reverse);
 };
+ #endif
