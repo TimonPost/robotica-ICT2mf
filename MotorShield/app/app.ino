@@ -40,11 +40,11 @@ void loop() {
     car.Constant(Speed::Fastest);
   } else if (detector.NoSensorsDetected(sensorValues)) {
     if (lastDetection == "left") {
-      
+      TurnRight();
     } else if (lastDetection == "right") {
       TurnLeft();
     } else {
-
+      
     }
     
     
