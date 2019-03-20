@@ -25,18 +25,31 @@ void loop() {
 
   const int size=5;
   bool sensorValues[size];
+  string lastDetection = null;
 
   // Getting sensorValues
   detector.GatherSensorResults(sensorValues);
   
   if (detector.LeftSideSensorsEnabled(sensorValues)) { 
     TurnRight();
+    lastDetection = "left";
   } else if (detector.RightSideSensorsEnabled(sensorValues)) {
     TurnLeft();
-  } else if (detector.NoSensorsDetected(sensorValues)) {
-    TurnLeft();
-  } else {
+    lastDetection = "right";
+  } else if(detector.MiddleSensorsEnabled(sensorValues)) {
     car.Constant(Speed::Fastest);
+  } else if (detector.NoSensorsDetected(sensorValues)) {
+    if (lastDetection == "left") {
+      
+    } else if (lastDetection == "right") {
+      TurnLeft();
+    } else {
+
+    }
+    
+    
+  } else {
+    car.Stop();
   }
 
   // Debug for sensorValues
