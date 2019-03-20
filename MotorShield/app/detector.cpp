@@ -40,6 +40,4 @@ void LineDetector::GatherSensorResults(bool (&sensorValues)[5]) {
     sensorValues[2] = HasValue(0, 3, input4);
     sensorValues[3] = HasValue(800, 4, input2);
     sensorValues[4] = HasValue(800, 4, input3);
-
-   return sensorValues;
 }

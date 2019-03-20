@@ -20,39 +20,41 @@ void setup()
   Serial.begin(9600);
 }
 
-void loop()
-{ 
+void loop() { 
   LineDetector detector = LineDetector();
 
   const int size=5;
   bool sensorValues[size];
 
+  // Getting sensorValues
   detector.GatherSensorResults(sensorValues);
-
+  
   if (detector.LeftSideSensorsEnabled(sensorValues)) { 
-    SharpTurnRight();
-  }
-  else if (detector.RightSideSensorsEnabled(sensorValues)) {
-    SharpTurnLeft();
+    TurnRight();
+  } else if (detector.RightSideSensorsEnabled(sensorValues)) {
+    TurnLeft();
   } else if (detector.NoSensorsDetected(sensorValues)) {
-    SharpTurnLeft();
-  }else {
+    TurnLeft();
+  } else {
     car.Constant(Speed::Fastest);
   }
 
+  // Debug for sensorValues
   for (int a = 0; a < 5; a++) {
     Serial.print(sensorValues[a]);
   }
   Serial.println();
+
+  // The smaller the delay, the more the robot will read the sensors
   delay(25);
 }
 
-void SharpTurnLeft() {
+void TurnLeft() {
   car.RightMotor().SetSpeed(Speed::Fastest);
   car.LeftMotor().Reverse(true);
 }
 
-void SharpTurnRight() {
-    car.RightMotor().Reverse(true);
-    car.LeftMotor().SetSpeed(Speed::Fastest);
+void TurnRight() {
+  car.RightMotor().Reverse(true);
+  car.LeftMotor().SetSpeed(Speed::Fastest);
 }
