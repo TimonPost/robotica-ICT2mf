@@ -1,7 +1,7 @@
 #include "arduino.h"
 #include <stdint.h>
 
-namespace ssd
+namespace laad
 {
 class SSD
 {
@@ -18,4 +18,4 @@ public:
   uint8_t getDisplay(uint8_t);
   uint8_t *getSsdPorts();
 };
-} // namespace ssd
+} // namespace laad

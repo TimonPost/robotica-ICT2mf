@@ -1,7 +1,7 @@
 #include "arduino.h"
 #include "SSD.h"
 
-using namespace ssd;
+using namespace laad;
 
 void _displayByte(uint8_t byte1, uint8_t byte2, SSD *pDisplay)
 {
