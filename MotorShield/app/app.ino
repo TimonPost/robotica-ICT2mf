@@ -1,10 +1,13 @@
 #include "transporter.h"
 #include "speed.h"
 #include "detector.h"
+#include "constants.h"
 
 #define byte uint8_t
 
 Transporter car;
+LineDetector detector;
+char * lastDetection = "";
 
 void setup()
 {
@@ -21,11 +24,9 @@ void setup()
 }
 
 void loop() { 
-  LineDetector detector = LineDetector();
+  detector = LineDetector();
 
-  const int size=5;
-  bool sensorValues[size];
-  string lastDetection = null;
+  bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
   // Getting sensorValues
   detector.GatherSensorResults(sensorValues);
@@ -37,6 +38,13 @@ void loop() {
     TurnLeft();
     lastDetection = "right";
   } else if(detector.MiddleSensorsEnabled(sensorValues)) {
+    
+    // if turning and we are on the line, we should disable one weel from spinning reverse.
+    if (lastDetection == "left") 
+      car.LeftMotor().Reverse(false);
+    else if (lastDetection == "right")
+      car.LeftMotor().Reverse(false);
+
     car.Constant(Speed::Fastest);
   } else if (detector.NoSensorsDetected(sensorValues)) {
     if (lastDetection == "left") {
@@ -45,9 +53,7 @@ void loop() {
       TurnLeft();
     } else {
       
-    }
-    
-    
+    }  
   } else {
     car.Stop();
   }
@@ -56,6 +62,7 @@ void loop() {
   for (int a = 0; a < 5; a++) {
     Serial.print(sensorValues[a]);
   }
+
   Serial.println();
 
   // The smaller the delay, the more the robot will read the sensors
