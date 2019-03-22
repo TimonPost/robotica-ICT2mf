@@ -11,8 +11,9 @@ char *lastDetection = "";
 
 void setup()
 {
-    car = Transporter();
-    car.Stop();
+  car = Transporter();
+  detector = LineDetector();
+  car.Stop();
 
     for (int i = 4; i <= 7; i++)
     {
@@ -29,8 +30,6 @@ void setup()
 
 void loop()
 {
-    detector = LineDetector();
-
     bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
     // Getting sensorValues
