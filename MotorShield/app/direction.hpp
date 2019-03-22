@@ -1,7 +1,8 @@
 #ifndef _direction_
 #define _direction_
 
-enum Direction{
+enum Direction
+{
     left = 0,
     right = 1
 };

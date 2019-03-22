@@ -11,8 +11,9 @@ Motor::Motor(byte enginePin, byte directionPin, byte lowest_power_value)
     this->lowest_power_value = lowest_power_value;
 }
 
-/// This will calulate the power needed for the provided `Speed`. 
-byte Motor::getSpeed(Speed speed, byte lowest_power_value) {
+/// This will calulate the power needed for the provided `Speed`.
+byte Motor::getSpeed(Speed speed, byte lowest_power_value)
+{
     switch (speed)
     {
     case Speed::Stationair:
@@ -46,7 +47,8 @@ void Motor::setSpeedByVal(byte val)
 /// Make to motor turn into the opposite direction.
 void Motor::reverse(bool reverse)
 {
-    if (reverse) {
+    if (reverse)
+    {
         digitalWrite(this->directionPin, HIGH);
     }
     else

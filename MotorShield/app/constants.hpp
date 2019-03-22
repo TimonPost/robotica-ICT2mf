@@ -1,5 +1,5 @@
 #ifndef _constants_
- #define _constants_
+#define _constants_
 #include <stdint.h>
 #include "Arduino.h"
 #define byte uint8_t
@@ -18,7 +18,7 @@ const byte MAX_POWER_VALUE = 255;
 const int NUMBER_OF_LINE_SENSORS = 5;
 
 // 4 pin sensors
-const int INPUT0 = A0; 
+const int INPUT0 = A0;
 const int INPUT1 = A1;
 const int INPUT2 = A2;
 const int INPUT3 = A3;

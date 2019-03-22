@@ -6,14 +6,14 @@
 
 class TransporterLoaderModule
 {
-  public:
-    TransporterLoaderModule(int laserPin, int servo);
-    bool hasCargo();
-    void unloadCargo();
+public:
+  TransporterLoaderModule(int laserPin, int servo);
+  bool hasCargo();
+  void unloadCargo();
 
-  private:
-    int laserPin;
-    Servo servo;
+private:
+  int laserPin;
+  Servo servo;
 };
 
 #endif
