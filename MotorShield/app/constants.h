@@ -9,8 +9,8 @@ const byte IN1 = 7;
 const byte IN2 = 4;
 const byte EN2 = 5; 
 
-const byte LOWEST_POWER_VALUE_ENGINE1 = 190;
-const byte LOWEST_POWER_VALUE_ENGINE2 = 190;
+const byte LOWEST_POWER_VALUE_ENGINE1 = 100;
+const byte LOWEST_POWER_VALUE_ENGINE2 = 100;
 
 const byte MIN_POWER_VALUE = 0;
 const byte MAX_POWER_VALUE = 255;
@@ -25,5 +25,7 @@ const int input3 = A3;
 
 // 3 pin sensor
 const int input4 = 3;
+
+const int buttonPin = 4; 
 
 #endif
