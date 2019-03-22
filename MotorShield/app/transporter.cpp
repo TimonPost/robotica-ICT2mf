@@ -4,13 +4,8 @@ Transporter::Transporter()
 {
     leftMotor = Motor(EN1, IN1, LOWEST_POWER_VALUE_ENGINE1);
     rightMotor = Motor(EN2, IN2, LOWEST_POWER_VALUE_ENGINE2);
-<<<<<<< HEAD
     leftMotor.reverse(false); 
     rightMotor.reverse(false);
-=======
-    leftMotor.reverse(false);
-    rightMotor.reverse(true);
->>>>>>> format
 }
 
 /// Make the transporter move in a constant way.

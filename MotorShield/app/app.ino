@@ -13,10 +13,11 @@ LineDetector lineDetector;
 void setup()
 {
   car = Transporter();
-  detector = LineDetector();
-  car.Stop();
+  lineDetector = LineDetector();
+  car.stop();
 
-  for (int i = 4; i <= 7; i++){
+  for (int i = 4; i <= 7; i++)
+  {
     pinMode(i, OUTPUT);
   }
 
@@ -25,17 +26,17 @@ void setup()
   pinMode(INPUT2, INPUT);
   pinMode(INPUT3, INPUT);
 
-    for (int i = 4; i <= 7; i++)
-    {
-        pinMode(i, OUTPUT);
-    }
+  for (int i = 4; i <= 7; i++)
+  {
+    pinMode(i, OUTPUT);
+  }
 
-    Serial.begin(9600);
+  Serial.begin(9600);
 }
 
 void loop()
 {
-    bool sensorValues[NUMBER_OF_LINE_SENSORS];
+  bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
   // Getting sensorValues
   lineDetector.gatherSensorResults(sensorValues);
@@ -49,10 +50,12 @@ void loop()
   {
     turnLeft();
     lastDetection = Direction::right;
-  } else if(detector.middleSensorsEnabled(sensorValues)) {
-    
+  }
+  else if (lineDetector.middleSensorsEnabled(sensorValues))
+  {
+
     // if turning and we are on the line, we should disable one weel from spinning reverse.
-    // if (lastDetection == Direction::left) 
+    // if (lastDetection == Direction::left)
     //   car.leftMotor.reverse(false);
     // else if (lastDetection == Direction::right)
     //   car.leftMotor.reverse(false);
@@ -77,45 +80,14 @@ void loop()
   {
     car.stop();
   }
-
-  // Debug for sensorValues
-  for (int a = 0; a < 5; a++)
-  {
-    Serial.print(sensorValues[a]);
-  }
-
-        car.Constant(Speed::Slow);
-    }
-    else if (detector.NoSensorsDetected(sensorValues))
-    {
-        if (lastDetection == "left")
-        {
-            TurnRight();
-        }
-        else if (lastDetection == "right")
-        {
-            TurnLeft();
-        }
-    }
-    else
-    {
-        car.Stop();
-    }
-
-    // Debug for sensorValues
-    for (int a = 0; a < 5; a++)
-    {
-        Serial.print(sensorValues[a]);
-    }
-    Serial.println();
 }
 
-void turnLeft()
-{
-  car.rightMotor.setSpeed(Speed::Fastest);
+void turnLeft() {
+  car.rightMotor.setSpeed(Speed::VeryFast);
+  car.leftMotor.setSpeed(Speed::Stationair);
 }
 
-void turnRight()
-{
-  car.rightMotor.reverse(true);
+void turnRight() {
+    car.rightMotor.setSpeed(Speed::Stationair);
+    car.leftMotor.setSpeed(Speed::VeryFast);
 }

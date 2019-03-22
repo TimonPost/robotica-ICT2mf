@@ -1,11 +1,12 @@
 #include "lineDetector.hpp"
 
-boolean LineDetector::hasValue(int threshold, int pinType, int input){
-  if (pinType == 4) {
-    if (analogRead(input) > threshold){
-      return 1;  
-    } else {
-      return 0;  
+boolean LineDetector::hasValue(int threshold, int pinType, int input)
+{
+  if (pinType == 4)
+  {
+    if (analogRead(input) > threshold)
+    {
+      return 1;
     }
     else
     {
@@ -18,6 +19,10 @@ boolean LineDetector::hasValue(int threshold, int pinType, int input){
     {
       return 1;
     }
+  }
+  else
+  {
+    return 0;
   }
 }
 
