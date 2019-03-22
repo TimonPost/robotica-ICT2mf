@@ -1,7 +1,7 @@
 #include "arduino.h"
 #include "SSD.h"
 
-using namespace ssd;
+using namespace laad;
 
 void _displayByte(uint8_t byte1, uint8_t byte2, SSD *pDisplay)
 {
@@ -43,6 +43,9 @@ void _displayByte(uint8_t byte1, uint8_t byte2, SSD *pDisplay)
   }
 
   delay(10);
+
+  digitalWrite(display2, LOW);
+  digitalWrite(display1, LOW);
 }
 
 SSD::SSD(uint8_t d1, uint8_t d2, uint8_t *p)
@@ -88,7 +91,7 @@ void SSD::displayState(bool loaded, uint8_t number)
 {
   unsigned char display2byte = 0b1001001;
 
-  switch (number)
+  switch (number % 10)
   {
   case 0:
     display2byte = 0b0111111;
