@@ -7,96 +7,140 @@
 
 Transporter car;
 LineDetector detector;
-char * lastDetection = "";
+char *lastDetection = "";
 bool ignition = false;
+int buttonState = 0;
+int lastButtonState = 0;
 
 void setup()
 {
+<<<<<<< HEAD
   car = Transporter();
   detector = LineDetector();
   car.Stop();
+=======
+    car = Transporter();
+    car.Stop();
+>>>>>>> e573dbbac3ed4d8f5bd7a02060cd55b8bf5d7c74
 
-  for (int i = 4; i <= 7; i++){
-    pinMode(i, OUTPUT);
-  }
-  pinMode(input0, INPUT);
-  pinMode(input1, INPUT);
-  pinMode(input2, INPUT);
-  pinMode(input3, INPUT);
-  pinMode(buttonPin, INPUT);
+    for (int i = 4; i <= 7; i++)
+    {
+        pinMode(i, OUTPUT);
+    }
+    pinMode(input0, INPUT);
+    pinMode(input1, INPUT);
+    pinMode(input2, INPUT);
+    pinMode(input3, INPUT);
+    pinMode(buttonPin, INPUT);
 
-  // pinMode(input4, INPUT);
+    // pinMode(input4, INPUT);
 
-  Serial.begin(9600);
+    Serial.begin(9600);
 }
 
-void loop() { 
-  IgnitionStateUpdate();
-  
-  if (ignition) {
-    delay(25);
+void loop()
+{
+    buttonState = digitalRead(buttonPin);
 
-    bool sensorValues[NUMBER_OF_LINE_SENSORS];
+    if (buttonState == HIGH)
+    {
+        delay(25);
+        detector = LineDetector();
 
-    // Getting sensorValues
-    detector.GatherSensorResults(sensorValues);
-    
-    if (detector.LeftSideSensorsEnabled(sensorValues)) { 
-      TurnRight();
-      lastDetection = "left";
-    } else if (detector.RightSideSensorsEnabled(sensorValues)) {
-      TurnLeft();
-      lastDetection = "right";
-    } else if(detector.MiddleSensorsEnabled(sensorValues)) {
-      
-      // if turning and we are on the line, we should disable one weel from spinning reverse.
-      if (lastDetection == "left") 
-        car.LeftMotor().Reverse(false);
-      else if (lastDetection == "right")
-        car.LeftMotor().Reverse(false);
+        bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
-      car.Constant(Speed::Slow);
-    } else if (detector.NoSensorsDetected(sensorValues)) {
-      if (lastDetection == "left") {
-        TurnRight();
-      } else if (lastDetection == "right") {
-        TurnLeft();
-      } else {
-        
-      }  
-    } else {
-      car.Stop();
+        // Getting sensorValues
+        detector.GatherSensorResults(sensorValues);
+
+        if (detector.LeftSideSensorsEnabled(sensorValues))
+        {
+            TurnRight();
+            lastDetection = "left";
+        }
+        else if (detector.RightSideSensorsEnabled(sensorValues))
+        {
+            TurnLeft();
+            lastDetection = "right";
+        }
+        else if (detector.MiddleSensorsEnabled(sensorValues))
+        {
+
+            // if turning and we are on the line, we should disable one weel from spinning reverse.
+            if (lastDetection == "left")
+                car.LeftMotor().Reverse(false);
+            else if (lastDetection == "right")
+                car.LeftMotor().Reverse(false);
+
+            car.Constant(Speed::Slow);
+        }
+        else if (detector.NoSensorsDetected(sensorValues))
+        {
+            if (lastDetection == "left")
+            {
+                TurnRight();
+            }
+            else if (lastDetection == "right")
+            {
+                TurnLeft();
+            }
+            else
+            {
+            }
+        }
+        else
+        {
+            car.Stop();
+        }
+
+        // Debug for sensorValues
+        for (int a = 0; a < 5; a++)
+        {
+            Serial.print(sensorValues[a]);
+        }
+
+        Serial.println();
+
+        // The smaller the delay, the more the robot will read the sensors
     }
-
-    // Debug for sensorValues
-    for (int a = 0; a < 5; a++) {
-      Serial.print(sensorValues[a]);
+    else
+    {
+        car.Stop();
     }
+<<<<<<< HEAD
 
     Serial.println();
   } else {
     car.Stop();
   }  
+=======
+>>>>>>> e573dbbac3ed4d8f5bd7a02060cd55b8bf5d7c74
 }
 
-void IgnitionStateUpdate() {
-  byte isPressed = digitalRead(buttonPin);
+void IgnitionStateUpdate()
+{
+    byte isPressed = digitalRead(buttonPin);
 
-  if (isPressed) {
-    if (ignition == true) {
-      ignition = false;
-    }else {
-      ignition = true;
-    }    
-  }
+    if (isPressed)
+    {
+        if (ignition == true)
+        {
+            ignition = false;
+        }
+        else
+        {
+            ignition = true;
+        }
+    }
 }
 
-void TurnLeft() {
-  car.RightMotor().SetSpeed(Speed::Slow);
-  car.LeftMotor().Reverse(true);
+void TurnLeft()
+{
+    car.RightMotor().SetSpeed(Speed::Slow);
+    car.LeftMotor().Reverse(true);
 }
 
-void TurnRight() {
-  car.RightMotor().Reverse(true);
-  car.LeftMotor().SetSpeed(Speed::Slow);
+void TurnRight()
+{
+    car.RightMotor().Reverse(true);
+    car.LeftMotor().SetSpeed(Speed::Slow);
 }
