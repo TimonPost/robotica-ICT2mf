@@ -8,9 +8,6 @@
 Transporter car;
 LineDetector detector;
 char *lastDetection = "";
-bool ignition = false;
-int buttonState = 0;
-int lastButtonState = 0;
 
 void setup()
 {
@@ -27,96 +24,66 @@ void setup()
     pinMode(input3, INPUT);
     pinMode(buttonPin, INPUT);
 
-    // pinMode(input4, INPUT);
-
     Serial.begin(9600);
 }
 
 void loop()
 {
-    buttonState = digitalRead(buttonPin);
+    detector = LineDetector();
 
-    if (buttonState == HIGH)
+    bool sensorValues[NUMBER_OF_LINE_SENSORS];
+
+    // Getting sensorValues
+    detector.GatherSensorResults(sensorValues);
+
+    if (detector.LeftSideSensorsEnabled(sensorValues))
     {
-        delay(25);
-        detector = LineDetector();
+        TurnRight();
+        lastDetection = "left";
+    }
+    else if (detector.RightSideSensorsEnabled(sensorValues))
+    {
+        TurnLeft();
+        lastDetection = "right";
+    }
+    else if (detector.MiddleSensorsEnabled(sensorValues))
+    {
 
-        bool sensorValues[NUMBER_OF_LINE_SENSORS];
+        // if turning and we are on the line, we should disable one weel from spinning reverse.
+        if (lastDetection == "left")
+            car.LeftMotor().Reverse(false);
+        else if (lastDetection == "right")
+            car.LeftMotor().Reverse(false);
 
-        // Getting sensorValues
-        detector.GatherSensorResults(sensorValues);
-
-        if (detector.LeftSideSensorsEnabled(sensorValues))
+        car.Constant(Speed::Slow);
+    }
+    else if (detector.NoSensorsDetected(sensorValues))
+    {
+        if (lastDetection == "left")
         {
             TurnRight();
-            lastDetection = "left";
         }
-        else if (detector.RightSideSensorsEnabled(sensorValues))
+        else if (lastDetection == "right")
         {
             TurnLeft();
-            lastDetection = "right";
-        }
-        else if (detector.MiddleSensorsEnabled(sensorValues))
-        {
-
-            // if turning and we are on the line, we should disable one weel from spinning reverse.
-            if (lastDetection == "left")
-                car.LeftMotor().Reverse(false);
-            else if (lastDetection == "right")
-                car.LeftMotor().Reverse(false);
-
-            car.Constant(Speed::Slow);
-        }
-        else if (detector.NoSensorsDetected(sensorValues))
-        {
-            if (lastDetection == "left")
-            {
-                TurnRight();
-            }
-            else if (lastDetection == "right")
-            {
-                TurnLeft();
-            }
-            else
-            {
-            }
         }
         else
         {
-            car.Stop();
         }
-
-        // Debug for sensorValues
-        for (int a = 0; a < 5; a++)
-        {
-            Serial.print(sensorValues[a]);
-        }
-
-        Serial.println();
-
-        // The smaller the delay, the more the robot will read the sensors
     }
     else
     {
         car.Stop();
     }
-}
 
-void IgnitionStateUpdate()
-{
-    byte isPressed = digitalRead(buttonPin);
-
-    if (isPressed)
+    // Debug for sensorValues
+    for (int a = 0; a < 5; a++)
     {
-        if (ignition == true)
-        {
-            ignition = false;
-        }
-        else
-        {
-            ignition = true;
-        }
+        Serial.print(sensorValues[a]);
     }
+    Serial.println();
+
+    delay(25);
 }
 
 void TurnLeft()
