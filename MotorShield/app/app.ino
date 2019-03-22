@@ -60,7 +60,7 @@ void loop()
   //   // else if (lastDetection == Direction::right)
   //   //   car.leftMotor.reverse(false);
 
-  //   car.constant(Speed::Fastest);
+  //   car.constant(Speed::Average);
   // }
   // else if (lineDetector.noSensorsDetected(sensorValues))
   // {
@@ -86,11 +86,11 @@ void loop()
 }
 
 void turnLeft() {
-  car.rightMotor.setSpeed(Speed::VeryFast);
+  car.rightMotor.setSpeed(Speed::Average);
   car.leftMotor.setSpeed(Speed::Stationair);
 }
 
 void turnRight() {
     car.rightMotor.setSpeed(Speed::Stationair);
-    car.leftMotor.setSpeed(Speed::VeryFast);
+    car.leftMotor.setSpeed(Speed::Average);
 }
