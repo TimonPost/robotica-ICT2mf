@@ -9,7 +9,6 @@ class LineDetector {
     private: 
         bool hasValue(int threshold, int pinType, int input);
     public:
-        LineDetector();
         void gatherSensorResults(bool (&sensorValues)[5]);
         bool middleSensorsEnabled(bool (&sensorValues)[5]);
         bool leftSideSensorsEnabled(bool (&sensorValues)[5]);

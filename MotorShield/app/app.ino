@@ -7,8 +7,8 @@
 #define byte uint8_t
 
 Transporter car;
-LineDetector detector;
 Direction lastDetection;
+LineDetector lineDetector;
 
 void setup()
 {
@@ -38,12 +38,15 @@ void loop()
     bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
   // Getting sensorValues
-  detector.gatherSensorResults(sensorValues);
-  
-  if (detector.leftSideSensorsEnabled(sensorValues)) { 
+  lineDetector.gatherSensorResults(sensorValues);
+
+  if (lineDetector.leftSideSensorsEnabled(sensorValues))
+  {
     turnRight();
     lastDetection = Direction::left;
-  } else if (detector.rightSideSensorsEnabled(sensorValues)) {
+  }
+  else if (lineDetector.rightSideSensorsEnabled(sensorValues))
+  {
     turnLeft();
     lastDetection = Direction::right;
   } else if(detector.middleSensorsEnabled(sensorValues)) {
@@ -55,23 +58,31 @@ void loop()
     //   car.leftMotor.reverse(false);
 
     car.constant(Speed::Fastest);
-  } else if (detector.noSensorsDetected(sensorValues)) {
-    if (lastDetection == Direction::left) {
+  }
+  else if (lineDetector.noSensorsDetected(sensorValues))
+  {
+    if (lastDetection == Direction::left)
+    {
       turnRight();
-    } else if (lastDetection == Direction::right) {
+    }
+    else if (lastDetection == Direction::right)
+    {
       turnLeft();
-    } else {
-      
-    }  
-  } else {
+    }
+    else
+    {
+    }
+  }
+  else
+  {
     car.stop();
   }
 
-        // if turning and we are on the line, we should disable one weel from spinning reverse.
-        // if (lastDetection == "left")
-        //     car.LeftMotor().Reverse(false);
-        // else if (lastDetection == "right")
-        //     car.LeftMotor().Reverse(false);
+  // Debug for sensorValues
+  for (int a = 0; a < 5; a++)
+  {
+    Serial.print(sensorValues[a]);
+  }
 
         car.Constant(Speed::Slow);
     }
@@ -99,10 +110,12 @@ void loop()
     Serial.println();
 }
 
-void turnLeft() {
+void turnLeft()
+{
   car.rightMotor.setSpeed(Speed::Fastest);
 }
 
-void turnRight() {
+void turnRight()
+{
   car.rightMotor.reverse(true);
 }

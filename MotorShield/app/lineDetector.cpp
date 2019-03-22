@@ -1,8 +1,11 @@
 #include "lineDetector.hpp"
 
+<<<<<<< HEAD
 LineDetector::LineDetector()
 {
 }
+=======
+>>>>>>> format
 
 boolean LineDetector::hasValue(int threshold, int pinType, int input){
   if (pinType == 4) {
