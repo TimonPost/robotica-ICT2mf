@@ -14,14 +14,9 @@ int lastButtonState = 0;
 
 void setup()
 {
-<<<<<<< HEAD
   car = Transporter();
   detector = LineDetector();
   car.Stop();
-=======
-    car = Transporter();
-    car.Stop();
->>>>>>> e573dbbac3ed4d8f5bd7a02060cd55b8bf5d7c74
 
     for (int i = 4; i <= 7; i++)
     {
@@ -64,12 +59,11 @@ void loop()
         }
         else if (detector.MiddleSensorsEnabled(sensorValues))
         {
-
             // if turning and we are on the line, we should disable one weel from spinning reverse.
-            if (lastDetection == "left")
-                car.LeftMotor().Reverse(false);
-            else if (lastDetection == "right")
-                car.LeftMotor().Reverse(false);
+            // if (lastDetection == "left")
+            //     car.LeftMotor().Reverse(false);
+            // else if (lastDetection == "right")
+            //     car.LeftMotor().Reverse(false);
 
             car.Constant(Speed::Slow);
         }
@@ -106,14 +100,6 @@ void loop()
     {
         car.Stop();
     }
-<<<<<<< HEAD
-
-    Serial.println();
-  } else {
-    car.Stop();
-  }  
-=======
->>>>>>> e573dbbac3ed4d8f5bd7a02060cd55b8bf5d7c74
 }
 
 void IgnitionStateUpdate()
@@ -136,11 +122,9 @@ void IgnitionStateUpdate()
 void TurnLeft()
 {
     car.RightMotor().SetSpeed(Speed::Slow);
-    car.LeftMotor().Reverse(true);
 }
 
 void TurnRight()
 {
-    car.RightMotor().Reverse(true);
     car.LeftMotor().SetSpeed(Speed::Slow);
 }
