@@ -1,4 +1,4 @@
-#include "motor.h"
+#include "motor.hpp"
 
 Motor::Motor()
 {
@@ -12,7 +12,7 @@ Motor::Motor(byte enginePin, byte directionPin, byte lowest_power_value)
 }
 
 /// This will calulate the power needed for the provided `Speed`.
-byte Motor::GetSpeed(Speed speed, byte lowest_power_value)
+byte Motor::getSpeed(Speed speed, byte lowest_power_value)
 {
     switch (speed)
     {
@@ -27,9 +27,9 @@ byte Motor::GetSpeed(Speed speed, byte lowest_power_value)
 }
 
 /// Set the motor speed by the given speed.
-void Motor::SetSpeed(Speed speed)
+void Motor::setSpeed(Speed speed)
 {
-    byte pwd = this->GetSpeed(speed, this->lowest_power_value);
+    byte pwd = this->getSpeed(speed, this->lowest_power_value);
     analogWrite(this->enginePin, pwd);
 }
 
@@ -39,13 +39,13 @@ void Motor::SetSpeed(Speed speed)
 /// # Remark
 /// The motor has resistant from gears and envoirment,
 /// becuse of this the given `val` could not get this motor in movement.
-void Motor::SetSpeedByVal(byte val)
+void Motor::setSpeedByVal(byte val)
 {
     analogWrite(this->enginePin, val);
 }
 
 /// Make to motor turn into the opposite direction.
-void Motor::Reverse(bool reverse)
+void Motor::reverse(bool reverse)
 {
     if (reverse)
     {

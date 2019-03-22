@@ -1,37 +1,23 @@
-#include "transporter.h"
+#include "transporter.hpp"
 
 Transporter::Transporter()
 {
-    motor1 = Motor(EN1, IN1, LOWEST_POWER_VALUE_ENGINE1);
-    motor2 = Motor(EN2, IN2, LOWEST_POWER_VALUE_ENGINE2);
-    motor1.Reverse(false);
-    motor2.Reverse(false);
-}
-
-/// Get the left motor of this transporter.
-/// With the motor you set the speed and directions.
-Motor &Transporter::LeftMotor()
-{
-    return motor1;
-}
-
-/// Get the right motor of this transporter.
-/// With the motor you set the speed and directions.
-Motor &Transporter::RightMotor()
-{
-    return motor2;
+    leftMotor = Motor(EN1, IN1, LOWEST_POWER_VALUE_ENGINE1);
+    rightMotor = Motor(EN2, IN2, LOWEST_POWER_VALUE_ENGINE2);
+    leftMotor.reverse(false); 
+    rightMotor.reverse(false);
 }
 
 /// Make the transporter move in a constant way.
-void Transporter::Constant(Speed speed)
+void Transporter::constant(Speed speed)
 {
-    motor1.SetSpeed(speed);
-    motor2.SetSpeed(speed);
+    leftMotor.setSpeed(speed);
+    rightMotor.setSpeed(speed);
 }
 
 /// Stop the transporter.
-void Transporter::Stop()
+void Transporter::stop()
 {
-    motor1.SetSpeed(Speed::Stationair);
-    motor2.SetSpeed(Speed::Stationair);
+    leftMotor.setSpeed(Speed::Stationair);
+    rightMotor.setSpeed(Speed::Stationair);
 }

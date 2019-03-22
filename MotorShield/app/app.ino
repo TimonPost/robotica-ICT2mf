@@ -1,91 +1,93 @@
-#include "transporter.h"
-#include "speed.h"
-#include "detector.h"
-#include "constants.h"
+#include "transporter.hpp"
+#include "speed.hpp"
+#include "lineDetector.hpp"
+#include "constants.hpp"
+#include "direction.hpp"
 
 #define byte uint8_t
 
 Transporter car;
-LineDetector detector;
-char *lastDetection = "";
+Direction lastDetection;
+LineDetector lineDetector;
 
 void setup()
 {
   car = Transporter();
-  detector = LineDetector();
-  car.Stop();
+  lineDetector = LineDetector();
+  car.stop();
 
-    for (int i = 4; i <= 7; i++)
-    {
-        pinMode(i, OUTPUT);
-    }
-    pinMode(input0, INPUT);
-    pinMode(input1, INPUT);
-    pinMode(input2, INPUT);
-    pinMode(input3, INPUT);
-    pinMode(buttonPin, INPUT);
+  for (int i = 4; i <= 7; i++)
+  {
+    pinMode(i, OUTPUT);
+  }
 
-    Serial.begin(9600);
+  pinMode(INPUT0, INPUT);
+  pinMode(INPUT1, INPUT);
+  pinMode(INPUT2, INPUT);
+  pinMode(INPUT3, INPUT);
+
+  for (int i = 4; i <= 7; i++)
+  {
+    pinMode(i, OUTPUT);
+  }
+
+  Serial.begin(9600);
 }
 
 void loop()
 {
-    bool sensorValues[NUMBER_OF_LINE_SENSORS];
+  bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
-    // Getting sensorValues
-    detector.GatherSensorResults(sensorValues);
+  // Getting sensorValues
+  lineDetector.gatherSensorResults(sensorValues);
 
-    if (detector.LeftSideSensorsEnabled(sensorValues))
+  if (lineDetector.leftSideSensorsEnabled(sensorValues))
+  {
+    turnRight();
+    lastDetection = Direction::left;
+  }
+  else if (lineDetector.rightSideSensorsEnabled(sensorValues))
+  {
+    turnLeft();
+    lastDetection = Direction::right;
+  }
+  else if (lineDetector.middleSensorsEnabled(sensorValues))
+  {
+
+    // if turning and we are on the line, we should disable one weel from spinning reverse.
+    // if (lastDetection == Direction::left)
+    //   car.leftMotor.reverse(false);
+    // else if (lastDetection == Direction::right)
+    //   car.leftMotor.reverse(false);
+
+    car.constant(Speed::Fastest);
+  }
+  else if (lineDetector.noSensorsDetected(sensorValues))
+  {
+    if (lastDetection == Direction::left)
     {
-        TurnRight();
-        lastDetection = "left";
+      turnRight();
     }
-    else if (detector.RightSideSensorsEnabled(sensorValues))
+    else if (lastDetection == Direction::right)
     {
-        TurnLeft();
-        lastDetection = "right";
-    }
-    else if (detector.MiddleSensorsEnabled(sensorValues))
-    {
-
-        // if turning and we are on the line, we should disable one weel from spinning reverse.
-        // if (lastDetection == "left")
-        //     car.LeftMotor().Reverse(false);
-        // else if (lastDetection == "right")
-        //     car.LeftMotor().Reverse(false);
-
-        car.Constant(Speed::Slow);
-    }
-    else if (detector.NoSensorsDetected(sensorValues))
-    {
-        if (lastDetection == "left")
-        {
-            TurnRight();
-        }
-        else if (lastDetection == "right")
-        {
-            TurnLeft();
-        }
+      turnLeft();
     }
     else
     {
-        car.Stop();
     }
-
-    // Debug for sensorValues
-    for (int a = 0; a < 5; a++)
-    {
-        Serial.print(sensorValues[a]);
-    }
-    Serial.println();
+  }
+  else
+  {
+    car.stop();
+  }
 }
 
-void TurnLeft()
-{
-    car.RightMotor().SetSpeed(Speed::Slow);
+void turnLeft() {
+  car.rightMotor.setSpeed(Speed::VeryFast);
+  car.leftMotor.setSpeed(Speed::Stationair);
 }
 
-void TurnRight()
-{
-    car.LeftMotor().SetSpeed(Speed::Slow);
+void turnRight() {
+    car.rightMotor.setSpeed(Speed::Stationair);
+    car.leftMotor.setSpeed(Speed::VeryFast);
 }
