@@ -13,6 +13,7 @@ bool ignition = false;
 void setup()
 {
   car = Transporter();
+  detector = LineDetector();
   car.Stop();
 
   for (int i = 4; i <= 7; i++){
@@ -31,11 +32,9 @@ void setup()
 
 void loop() { 
   IgnitionStateUpdate();
-
-  Serial.println(ignition);
+  
   if (ignition) {
     delay(25);
-    detector = LineDetector();
 
     bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
@@ -75,8 +74,6 @@ void loop() {
     }
 
     Serial.println();
-
-    // The smaller the delay, the more the robot will read the sensors
   } else {
     car.Stop();
   }  
