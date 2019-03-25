@@ -3,12 +3,14 @@
 #include "lineDetector.hpp"
 #include "constants.hpp"
 #include "direction.hpp"
+#include "Button.h"
 
 #define byte uint8_t
 
 Transporter car;
 Direction lastDetection;
 LineDetector lineDetector;
+laad::Button btn(buttonPin);
 
 void setup()
 {
@@ -36,61 +38,59 @@ void setup()
 
 void loop()
 {
-  bool sensorValues[NUMBER_OF_LINE_SENSORS];
+  btn.onPress(loopAfterPressed);
+}
 
-  // Getting sensorValues
-  lineDetector.gatherSensorResults(sensorValues);
+void loopAfterPressed()
+{
+  while (true)
+  {
+    bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
-  if (lineDetector.middleSensorsEnabled(sensorValues))
-  {
+    // Getting sensorValues
+    lineDetector.gatherSensorResults(sensorValues);
 
-    // if turning and we are on the line, we should disable one weel from spinning reverse.
-    // if (lastDetection == Direction::left)
-    //   car.leftMotor.reverse(false);
-    // else if (lastDetection == Direction::right)
-    //   car.leftMotor.reverse(false);
-
-    car.constant(Speed::Fastest);
-  }
-  else if (lineDetector.leftSideSensorsEnabled(sensorValues))
-  {
-    turnRight();
-    lastDetection = Direction::left;
-  }
-  else if (lineDetector.rightSideSensorsEnabled(sensorValues))
-  {
-    turnLeft();
-    lastDetection = Direction::right;
-  }
-  
-  else if (lineDetector.noSensorsDetected(sensorValues))
-  {
-    if (lastDetection == Direction::left)
+    if (lineDetector.middleSensorsEnabled(sensorValues))
+    {
+      car.constant(Speed::Fastest);
+    }
+    else if (lineDetector.leftSideSensorsEnabled(sensorValues))
     {
       turnRight();
+      lastDetection = Direction::left;
     }
-    else if (lastDetection == Direction::right)
+    else if (lineDetector.rightSideSensorsEnabled(sensorValues))
     {
       turnLeft();
+      lastDetection = Direction::right;
     }
-    else
+    else if (lineDetector.noSensorsDetected(sensorValues))
     {
+      if (lastDetection == Direction::left)
+      {
+        turnRight();
+        lastDetection = Direction::left;
+      }
+      if (lastDetection == Direction::right)
+      {
+        turnLeft();
+         lastDetection = Direction::right;
+      }
     }
+    else if(lineDetector.specialMarkDetected(sensorValues)) {
+      car.stop();
+    }
+    else {
+      turnRight();
+    }
+
+    Serial.print(sensorValues[0]);
+    Serial.print(sensorValues[1]);
+    Serial.print(sensorValues[2]);
+    Serial.print(sensorValues[3]);
+    Serial.print(sensorValues[4]);
+    Serial.println();
   }
-  else if (lineDetector.specialMarkDetected(sensorValues)) {
-    Serial.println("special mark!!");
-    car.stop();
-  }
-  else
-  {
-    car.stop();
-  }
-  Serial.print(sensorValues[0]);
-  Serial.print(sensorValues[1]);
-  Serial.print(sensorValues[2]);
-  Serial.print(sensorValues[3]);
-  Serial.print(sensorValues[4]);
-  Serial.println();
 }
 
 void turnLeft()
