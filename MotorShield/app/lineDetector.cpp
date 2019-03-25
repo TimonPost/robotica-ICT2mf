@@ -32,22 +32,27 @@ boolean LineDetector::hasValue(int threshold, int pinType, int input)
 
 bool LineDetector::middleSensorsEnabled(bool (&sensorValues)[5])
 {
-  return (sensorValues[2] == true);
+  return (sensorValues[0] == false && sensorValues[1] == false && sensorValues[2] == true && sensorValues[3] == false && sensorValues[4] == false);
 }
 
 bool LineDetector::leftSideSensorsEnabled(bool (&sensorValues)[5])
 {
-  return (sensorValues[0] == true || sensorValues[1] == true);
+  return ((sensorValues[0] == true || sensorValues[1] == true) && sensorValues[2] == false && sensorValues[3] == false && sensorValues[4] == false);
 }
 
 bool LineDetector::rightSideSensorsEnabled(bool (&sensorValues)[5])
 {
-  return (sensorValues[3] == true || sensorValues[4] == true);
+  return (sensorValues[0] == false && sensorValues[1] == false && sensorValues[2] == false && (sensorValues[3] == true || sensorValues[4] == true));
 }
 
 bool LineDetector::noSensorsDetected(bool (&sensorValues)[5])
 {
-  return (sensorValues[0] == false || sensorValues[1] == false || sensorValues[2] == false || sensorValues[3] == false || sensorValues[4 == false]);
+  return (sensorValues[0] == false && sensorValues[1] == false && sensorValues[2] == false && sensorValues[3] == false && sensorValues[4] == false);
+}
+
+bool LineDetector::specialMarkDetected(bool (&sensorValues)[5])
+{
+  return (sensorValues[0] == true && sensorValues[1] == false && sensorValues[2] == true && sensorValues[3] == false && sensorValues[4] == true);
 }
 
 void LineDetector::gatherSensorResults(bool (&sensorValues)[5])

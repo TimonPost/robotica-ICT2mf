@@ -16,5 +16,6 @@ class LineDetector
     bool leftSideSensorsEnabled(bool (&sensorValues)[5]);
     bool rightSideSensorsEnabled(bool (&sensorValues)[5]);
     bool noSensorsDetected(bool (&sensorValues)[5]);
+    bool LineDetector::specialMarkDetected(bool (&sensorValues)[5]);
 };
 #endif
