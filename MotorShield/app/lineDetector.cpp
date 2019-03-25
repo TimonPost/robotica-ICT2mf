@@ -6,23 +6,27 @@ boolean LineDetector::hasValue(int threshold, int pinType, int input)
   {
     if (analogRead(input) > threshold)
     {
-      return 1;
+      return true;
     }
     else
     {
-      return 0;
+      return false;
     }
   }
   else if (pinType == 3)
   {
     if (digitalRead(input) == HIGH)
     {
-      return 1;
+      return true;
+    }
+    else
+    {
+      return false;
     }
   }
   else
   {
-    return 0;
+    return false;
   }
 }
 
