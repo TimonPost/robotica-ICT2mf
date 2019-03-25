@@ -36,16 +36,9 @@ void setup()
   Serial.begin(9600);
 }
 
-void loop()
+void loopAfterPressed()
 {
-  bool started = false;
-  if (btn.isPressed())
-  {
-    started = true;
-    delay(3000);
-  }
-
-  if (started)
+  while (true)
   {
     bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
@@ -93,6 +86,11 @@ void loop()
     }
     Serial.println(sensorValues[2]);
   }
+}
+
+void loop()
+{
+  btn.onPress(loopAfterPressed);
 }
 
 void turnLeft()
