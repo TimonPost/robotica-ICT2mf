@@ -2,6 +2,7 @@
 #define _constants_
 #include <stdint.h>
 #include "Arduino.h"
+#include "speed.hpp"
 #define byte uint8_t
 
 const byte EN1 = 6;
@@ -16,6 +17,10 @@ const byte MIN_POWER_VALUE = 0;
 const byte MAX_POWER_VALUE = 255;
 
 const int NUMBER_OF_LINE_SENSORS = 5;
+
+const Speed TURN_MINIMUM_SPEED = Speed::Stationair;
+const Speed TURN_MAXIMUM_SPEED = Speed::Fast;
+const Speed DEFAULT_CONSTANT_SPEED = Speed::Fast;
 
 // 4 pin sensors
 const int INPUT0 = A0;

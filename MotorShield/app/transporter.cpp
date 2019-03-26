@@ -21,3 +21,31 @@ void Transporter::stop()
     leftMotor.setSpeed(Speed::Stationair);
     rightMotor.setSpeed(Speed::Stationair);
 }
+
+void Transporter::turnLeft(bool mostLeftSensorEnabled, bool leftSensorEnabled)
+{
+  if (mostLeftSensorEnabled)
+  {
+    rightMotor.setSpeed(Speed::Fastest);
+  }
+  if (leftSensorEnabled)
+  {
+    rightMotor.setSpeed(Speed::Average);
+  }
+  
+  leftMotor.setSpeed(TURN_MINIMUM_SPEED);
+}
+
+void Transporter::turnRight(bool mostRightSensorEnabled, bool rightSensorEnabled)
+{
+  if (rightSensorEnabled)
+  {
+    leftMotor.setSpeed(Speed::Average);
+  }
+  if (mostRightSensorEnabled)
+  {
+    leftMotor.setSpeed(Speed::Fastest);
+  }
+
+  rightMotor.setSpeed(TURN_MINIMUM_SPEED);
+}

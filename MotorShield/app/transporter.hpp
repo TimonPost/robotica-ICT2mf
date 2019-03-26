@@ -20,5 +20,9 @@ class Transporter
 
     /// Stop the transporter.
     void stop();
+
+    void turnLeft(bool mostLeftSensorEnabled, bool leftSensorEnabled);
+
+    void turnRight(bool mostRightSensorEnabled, bool rightSensorEnabled);    
 };
 #endif
