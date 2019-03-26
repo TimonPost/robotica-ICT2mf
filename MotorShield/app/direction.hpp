@@ -4,7 +4,8 @@
 enum Direction
 {
     left = 0,
-    right = 1
+    right = 1,
+    straight = 2
 };
 
 #endif

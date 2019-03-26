@@ -52,7 +52,8 @@ void loopAfterPressed()
 
     if (lineDetector.middleSensorsEnabled(sensorValues))
     {
-      car.constant(Speed::Fastest);
+      goStraight();
+      lastDetection = Direction::straight;
     }
     else if (lineDetector.leftSideSensorsEnabled(sensorValues))
     {
@@ -68,20 +69,20 @@ void loopAfterPressed()
     {
       if (lastDetection == Direction::left)
       {
-        turnRight();
-        lastDetection = Direction::left;
+        turnLeft();
       }
       if (lastDetection == Direction::right)
       {
-        turnLeft();
-         lastDetection = Direction::right;
+        turnRight();
       }
     }
-    else if(lineDetector.specialMarkDetected(sensorValues)) {
+    else if (lineDetector.specialMarkDetected(sensorValues))
+    {
       car.stop();
     }
-    else {
-      turnRight();
+    else
+    {
+      figureDirection();
     }
 
     Serial.print(sensorValues[0]);
@@ -93,14 +94,48 @@ void loopAfterPressed()
   }
 }
 
+void figureDirection()
+{
+  if (lastDetection == Direction::left)
+  {
+    turnLeft();
+  }
+  if (lastDetection == Direction::right)
+  {
+    turnRight();
+  }
+  if (lastDetection == Direction::straight)
+  {
+    goStraight();
+  } else {
+    car.stop();
+  }
+}
+
+const Speed TURN_MINIMUM_SPEED = Speed::VerySlow;
+const Speed TURN_MAXIMUM_SPEED = Speed::Fast;
+const Speed DEFAULT_CONSTANT_SPEED = Speed::Fast;
+
+void goStraight () {
+  car.rightMotor.reverse(false);
+  car.rightMotor.reverse(false);
+  car.constant(DEFAULT_CONSTANT_SPEED);
+}
+
 void turnLeft()
 {
-  car.leftMotor.setSpeed(Speed::Average);
-  car.rightMotor.setSpeed(Speed::Stationair);
+  car.leftMotor.reverse(false);
+  car.rightMotor.reverse(true);
+
+  car.leftMotor.setSpeed(TURN_MINIMUM_SPEED);
+  car.rightMotor.setSpeed(TURN_MAXIMUM_SPEED);
 }
 
 void turnRight()
 {
-  car.leftMotor.setSpeed(Speed::Stationair);
-  car.rightMotor.setSpeed(Speed::Average);
+  car.rightMotor.reverse(false);
+  car.leftMotor.reverse(true);
+
+  car.leftMotor.setSpeed(TURN_MAXIMUM_SPEED);
+  car.rightMotor.setSpeed(TURN_MINIMUM_SPEED);
 }
