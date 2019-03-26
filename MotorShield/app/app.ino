@@ -11,6 +11,7 @@ Transporter car;
 Direction lastDetection;
 LineDetector lineDetector;
 laad::Button btn(buttonPin);
+bool sensorValues[NUMBER_OF_LINE_SENSORS];
 
 void setup()
 {
@@ -45,8 +46,6 @@ void loopAfterPressed()
 {
   while (true)
   {
-    bool sensorValues[NUMBER_OF_LINE_SENSORS];
-
     // Getting sensorValues
     lineDetector.gatherSensorResults(sensorValues);
 
@@ -96,6 +95,7 @@ void loopAfterPressed()
 
 void figureDirection()
 {
+  Serial.println(lastDetection);
   if (lastDetection == Direction::left)
   {
     turnLeft();
@@ -107,16 +107,19 @@ void figureDirection()
   if (lastDetection == Direction::straight)
   {
     goStraight();
-  } else {
+  }
+  else
+  {
     car.stop();
   }
 }
 
-const Speed TURN_MINIMUM_SPEED = Speed::VerySlow;
+const Speed TURN_MINIMUM_SPEED = Speed::Stationair;
 const Speed TURN_MAXIMUM_SPEED = Speed::Fast;
 const Speed DEFAULT_CONSTANT_SPEED = Speed::Fast;
 
-void goStraight () {
+void goStraight()
+{
   car.rightMotor.reverse(false);
   car.rightMotor.reverse(false);
   car.constant(DEFAULT_CONSTANT_SPEED);
@@ -124,18 +127,28 @@ void goStraight () {
 
 void turnLeft()
 {
-  car.rightMotor.reverse(false);
-  car.leftMotor.reverse(true);
+  if (sensorValues[0])
+  {
+    car.rightMotor.setSpeed(Speed::Fastest);
+  }
+  if (sensorValues[1])
+  {
+    car.rightMotor.setSpeed(Speed::Average);
+  }
   
-  car.rightMotor.setSpeed(TURN_MAXIMUM_SPEED);
   car.leftMotor.setSpeed(TURN_MINIMUM_SPEED);
 }
 
 void turnRight()
 {
-  car.rightMotor.reverse(true);
-  car.leftMotor.reverse(false);
+  if (sensorValues[3])
+  {
+    car.leftMotor.setSpeed(Speed::Average);
+  }
+  if (sensorValues[4])
+  {
+    car.leftMotor.setSpeed(Speed::Fastest);
+  }
 
-  car.rightMotor.setSpeed(TURN_MAXIMUM_SPEED);
-  car.leftMotor.setSpeed(TURN_MINIMUM_SPEED);
+  car.rightMotor.setSpeed(TURN_MINIMUM_SPEED);
 }

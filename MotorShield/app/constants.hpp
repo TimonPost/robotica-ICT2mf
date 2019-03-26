@@ -9,8 +9,8 @@ const byte IN1 = 7;
 const byte IN2 = 4;
 const byte EN2 = 5;
 
-const byte LOWEST_POWER_VALUE_ENGINE1 = 150;
-const byte LOWEST_POWER_VALUE_ENGINE2 = 150;
+const byte LOWEST_POWER_VALUE_ENGINE1 = 180;
+const byte LOWEST_POWER_VALUE_ENGINE2 = 180;
 
 const byte MIN_POWER_VALUE = 0;
 const byte MAX_POWER_VALUE = 255;
