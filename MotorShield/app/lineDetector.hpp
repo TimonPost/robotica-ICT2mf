@@ -17,6 +17,6 @@ class LineDetector
     bool rightSideSensorsEnabled(bool (&sensorValues)[5]);
     bool noSensorsDetected(bool (&sensorValues)[5]);
     bool specialMarkDetected(bool (&sensorValues)[5]);
-    bool TSplitDetected(bool (&sensorValues)[5]);
+    bool tSplitDetected(bool (&sensorValues)[5]);
 };
 #endif
