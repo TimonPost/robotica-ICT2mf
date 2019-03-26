@@ -57,12 +57,12 @@ void loopAfterPressed()
     }
     else if (lineDetector.leftSideSensorsEnabled(sensorValues))
     {
-      turnRight();
+      turnLeft();
       lastDetection = Direction::left;
     }
     else if (lineDetector.rightSideSensorsEnabled(sensorValues))
     {
-      turnLeft();
+      turnRight();
       lastDetection = Direction::right;
     }
     else if (lineDetector.noSensorsDetected(sensorValues))
@@ -124,18 +124,18 @@ void goStraight () {
 
 void turnLeft()
 {
-  car.leftMotor.reverse(false);
-  car.rightMotor.reverse(true);
-
-  car.leftMotor.setSpeed(TURN_MINIMUM_SPEED);
+  car.rightMotor.reverse(false);
+  car.leftMotor.reverse(true);
+  
   car.rightMotor.setSpeed(TURN_MAXIMUM_SPEED);
+  car.leftMotor.setSpeed(TURN_MINIMUM_SPEED);
 }
 
 void turnRight()
 {
-  car.rightMotor.reverse(false);
-  car.leftMotor.reverse(true);
+  car.rightMotor.reverse(true);
+  car.leftMotor.reverse(false);
 
-  car.leftMotor.setSpeed(TURN_MAXIMUM_SPEED);
-  car.rightMotor.setSpeed(TURN_MINIMUM_SPEED);
+  car.rightMotor.setSpeed(TURN_MAXIMUM_SPEED);
+  car.leftMotor.setSpeed(TURN_MINIMUM_SPEED);
 }
