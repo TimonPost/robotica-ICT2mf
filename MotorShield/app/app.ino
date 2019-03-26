@@ -4,7 +4,6 @@
 #include "constants.hpp"
 #include "direction.hpp"
 #include "Button.h"
-
 #define byte uint8_t
 
 Transporter car;
@@ -41,12 +40,21 @@ void loop()
   btn.onPress(loopAfterPressed);
 }
 
-void loopAfterPressed()
+void followLineUntilTSplit()
 {
+  bool sensorValues[NUMBER_OF_LINE_SENSORS];
+
+  goStraight();
+  while(true){
+    lineDetector.gatherSensorResults(sensorValues);
+    if(!lineDetector.tSplitDetected(sensorValues))
+    {
+      break;
+    }
+  }
+  
   while (true)
   {
-    bool sensorValues[NUMBER_OF_LINE_SENSORS];
-
     // Getting sensorValues
     lineDetector.gatherSensorResults(sensorValues);
 
@@ -76,21 +84,56 @@ void loopAfterPressed()
         turnRight();
       }
     }
-    else if (lineDetector.specialMarkDetected(sensorValues))
+    else if(lineDetector.tSplitDetected(sensorValues))
     {
-      car.stop();
+      return;
     }
     else
     {
       figureDirection();
     }
+  }
+}
 
-    Serial.print(sensorValues[0]);
-    Serial.print(sensorValues[1]);
-    Serial.print(sensorValues[2]);
-    Serial.print(sensorValues[3]);
-    Serial.print(sensorValues[4]);
-    Serial.println();
+void dropCargo()
+{
+  car.stop();
+  delay(1000);
+}
+
+void loadCargo()
+{
+  car.stop();
+  delay(2000);
+}
+
+void turnRightA(){
+  turnRight();
+  delay(500);
+}
+
+typedef void (*voidFuncPtr)();
+
+void loopAfterPressed()
+{
+  voidFuncPtr ignoreTSplit = followLineUntilTSplit;
+
+
+  const int ROUTESECTIONCOUNT = 8;
+  voidFuncPtr route[ROUTESECTIONCOUNT] = {
+      followLineUntilTSplit,
+      ignoreTSplit,
+      ignoreTSplit,
+      loadCargo,
+      followLineUntilTSplit,
+      turnRightA,
+      followLineUntilTSplit,
+      dropCargo,
+      };
+
+  for (int i = 0; i < ROUTESECTIONCOUNT; i++)
+  {
+    route[i]();
   }
 }
 
@@ -107,7 +150,9 @@ void figureDirection()
   if (lastDetection == Direction::straight)
   {
     goStraight();
-  } else {
+  }
+  else
+  {
     car.stop();
   }
 }
@@ -116,7 +161,8 @@ const Speed TURN_MINIMUM_SPEED = Speed::VerySlow;
 const Speed TURN_MAXIMUM_SPEED = Speed::Fast;
 const Speed DEFAULT_CONSTANT_SPEED = Speed::Fast;
 
-void goStraight () {
+void goStraight()
+{
   car.rightMotor.reverse(false);
   car.rightMotor.reverse(false);
   car.constant(DEFAULT_CONSTANT_SPEED);
@@ -126,7 +172,7 @@ void turnLeft()
 {
   car.rightMotor.reverse(false);
   car.leftMotor.reverse(true);
-  
+
   car.rightMotor.setSpeed(TURN_MAXIMUM_SPEED);
   car.leftMotor.setSpeed(TURN_MINIMUM_SPEED);
 }
