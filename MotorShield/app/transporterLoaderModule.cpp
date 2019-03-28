@@ -21,5 +21,12 @@ void TransporterLoaderModule::unloadCargo()
         this->servo.write(i);
         delay(50);
     }
+    delay(2000);
+    for (int i = 0; i < 10; i++)
+    {
+        this->servo.write(10);
+        delay(50);
+        this->servo.write(0);
+    }
     this->servo.write(90);
 }

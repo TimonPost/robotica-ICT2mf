@@ -57,7 +57,7 @@ bool LineDetector::specialMarkDetected(bool (&sensorValues)[5])
 
 bool LineDetector::tSplitDetected(bool (&sensorValues)[5])
 {
-  return (sensorValues[0] == true && sensorValues[1] == true && sensorValues[2] == false && sensorValues[3] == true && sensorValues[4] == true);
+  return (sensorValues[0] == true && sensorValues[1] == true && sensorValues[3] == true && sensorValues[4] == true);
 }
 
 void LineDetector::gatherSensorResults(bool (&sensorValues)[5])

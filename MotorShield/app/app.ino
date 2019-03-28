@@ -4,13 +4,18 @@
 #include "constants.hpp"
 #include "direction.hpp"
 #include "Button.h"
+#include "transporterLoaderModule.hpp"
 #define byte uint8_t
+
+const int SENSOR_COUNT = 5;
+const int BUFFER_SIZE = 10;
 
 Transporter car;
 Direction lastDetection;
 LineDetector lineDetector;
 laad::Button btn(buttonPin);
-bool sensorValues[NUMBER_OF_LINE_SENSORS];
+bool sensorValues[SENSOR_COUNT];
+TransporterLoaderModule *transporterLoaderModule;
 
 void setup()
 {
@@ -27,6 +32,8 @@ void setup()
   pinMode(INPUT1, INPUT);
   pinMode(INPUT2, INPUT);
   pinMode(INPUT3, INPUT);
+  pinMode(9, OUTPUT);
+  transporterLoaderModule = new TransporterLoaderModule(13,9);
 
   for (int i = 4; i <= 7; i++)
   {
@@ -41,23 +48,59 @@ void loop()
   btn.onPress(loopAfterPressed);
 }
 
+bool sensorCycleBuffer[BUFFER_SIZE][SENSOR_COUNT];
+int bufferIndex = 0;
+bool mergedSensors[SENSOR_COUNT];
+
+void updateMergedSensors() {
+	memset(mergedSensors, 0, sizeof(mergedSensors));
+	for (int i = 0; i < BUFFER_SIZE; i++)
+	{
+		for (int j = 0; j < SENSOR_COUNT; j++) {
+			mergedSensors[j] = mergedSensors[j] | sensorCycleBuffer[i][j];
+		}
+	}
+}
+
+void gatherSensorResultsWrapper()
+{
+		lineDetector.gatherSensorResults(sensorValues);
+		for (int i = 0; i < SENSOR_COUNT; i++) {
+			sensorCycleBuffer[bufferIndex][i] = sensorValues[i];
+		}
+		updateMergedSensors();
+		bufferIndex = ++bufferIndex % BUFFER_SIZE;
+}
+
 void followLineUntilTSplit()
 {
-  bool sensorValues[NUMBER_OF_LINE_SENSORS];
-
+  Serial.println("followLineUntilTSplit");
   goStraight();
   while(true){
-    lineDetector.gatherSensorResults(sensorValues);
+    delay(25);
+    gatherSensorResultsWrapper();
     if(!lineDetector.tSplitDetected(sensorValues))
     {
+      delay(100);
+      Serial.println("out of tsplit");
       break;
     }
   }
   
   while (true)
   {
+    delay(25);
+
     // Getting sensorValues
-    lineDetector.gatherSensorResults(sensorValues);
+    gatherSensorResultsWrapper();
+
+    Serial.print(sensorValues[0]);
+    Serial.print(sensorValues[1]);
+    Serial.print(sensorValues[2]);
+    Serial.print(sensorValues[3]);
+    Serial.print(sensorValues[4]);
+    Serial.println();
+
 
     if (lineDetector.middleSensorsEnabled(sensorValues))
     {
@@ -85,7 +128,7 @@ void followLineUntilTSplit()
         turnRight();
       }
     }
-    else if(lineDetector.tSplitDetected(sensorValues))
+    else if(lineDetector.tSplitDetected(mergedSensors))
     {
       return;
     }
@@ -98,19 +141,37 @@ void followLineUntilTSplit()
 
 void dropCargo()
 {
+  Serial.println("dropCargo");
   car.stop();
-  delay(1000);
+  transporterLoaderModule->unloadCargo();
+  delay(2000);
 }
 
 void loadCargo()
 {
   car.stop();
-  delay(2000);
+  while(true){
+    delay(50);
+    if(transporterLoaderModule->hasCargo()){
+      break;
+    }
+  }
 }
 
 void turnRightA(){
   turnRight();
-  delay(500);
+  lastDetection = Direction::right;
+  delay(400);
+}
+
+void turnLeftA(){
+  turnLeft();
+  lastDetection = Direction::left;
+  delay(400);
+}
+
+void stop(){
+  car.stop();
 }
 
 typedef void (*voidFuncPtr)();
@@ -119,9 +180,9 @@ void loopAfterPressed()
 {
   voidFuncPtr ignoreTSplit = followLineUntilTSplit;
 
-
-  const int ROUTESECTIONCOUNT = 8;
+  const int ROUTESECTIONCOUNT = 21;
   voidFuncPtr route[ROUTESECTIONCOUNT] = {
+      //Start
       followLineUntilTSplit,
       ignoreTSplit,
       ignoreTSplit,
@@ -130,6 +191,22 @@ void loopAfterPressed()
       turnRightA,
       followLineUntilTSplit,
       dropCargo,
+
+      followLineUntilTSplit,
+      ignoreTSplit,
+      loadCargo,
+      followLineUntilTSplit,
+
+      turnRightA,
+      followLineUntilTSplit,
+      ignoreTSplit,
+      dropCargo,
+      ignoreTSplit,
+      followLineUntilTSplit,
+
+      turnLeftA,
+      followLineUntilTSplit,
+      stop
       };
 
   for (int i = 0; i < ROUTESECTIONCOUNT; i++)
@@ -155,7 +232,7 @@ void figureDirection()
   }
   else
   {
-    car.stop();
+    //car.stop();
   }
 }
 
