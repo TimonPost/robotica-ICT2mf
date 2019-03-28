@@ -109,23 +109,23 @@ void followLineUntilTSplit()
     }
     else if (lineDetector.leftSideSensorsEnabled(sensorValues))
     {
-      turnLeft();
+      car.turnLeft(sensorValues[0], sensorValues[1]);
       lastDetection = Direction::left;
     }
     else if (lineDetector.rightSideSensorsEnabled(sensorValues))
     {
-      turnRight();
+      car.turnRight(sensorValues[4], sensorValues[3]);
       lastDetection = Direction::right;
     }
     else if (lineDetector.noSensorsDetected(sensorValues))
     {
       if (lastDetection == Direction::left)
       {
-        turnLeft();
+        car.turnLeft(sensorValues[0], sensorValues[1]);
       }
       if (lastDetection == Direction::right)
       {
-        turnRight();
+        car.turnRight(sensorValues[4], sensorValues[3]);
       }
     }
     else if(lineDetector.tSplitDetected(mergedSensors))
@@ -159,13 +159,13 @@ void loadCargo()
 }
 
 void turnRightA(){
-  turnRight();
+  car.turnRight();
   lastDetection = Direction::right;
   delay(400);
 }
 
 void turnLeftA(){
-  turnLeft();
+  car.turnLeft();
   lastDetection = Direction::left;
   delay(400);
 }
@@ -220,11 +220,11 @@ void figureDirection()
   Serial.println(lastDetection);
   if (lastDetection == Direction::left)
   {
-    turnLeft();
+    car.turnLeft(sensorValues[0], sensorValues[1]);
   }
   if (lastDetection == Direction::right)
   {
-    turnRight();
+    car.turnRight(sensorValues[4], sensorValues[3]);
   }
   if (lastDetection == Direction::straight)
   {
@@ -236,40 +236,9 @@ void figureDirection()
   }
 }
 
-const Speed TURN_MINIMUM_SPEED = Speed::Stationair;
-const Speed TURN_MAXIMUM_SPEED = Speed::Fast;
-const Speed DEFAULT_CONSTANT_SPEED = Speed::Fast;
-
 void goStraight()
 {
   car.rightMotor.reverse(false);
   car.rightMotor.reverse(false);
   car.constant(DEFAULT_CONSTANT_SPEED);
-}
-
-void turnLeft()
-{
-  if (sensorValues[0])
-  {
-    car.rightMotor.setSpeed(Speed::Fastest);
-  }
-  if (sensorValues[1])
-  {
-    car.rightMotor.setSpeed(Speed::Average);
-  }
-  car.leftMotor.setSpeed(TURN_MINIMUM_SPEED);
-}
-
-void turnRight()
-{
-  if (sensorValues[3])
-  {
-    car.leftMotor.setSpeed(Speed::Average);
-  }
-  if (sensorValues[4])
-  {
-    car.leftMotor.setSpeed(Speed::Fastest);
-  }
-
-  car.rightMotor.setSpeed(TURN_MINIMUM_SPEED);
 }
